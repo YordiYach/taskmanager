@@ -1,6 +1,8 @@
 import express, { Application, Request, Response } from "express";
 import routesTask from "../routes/task";
 import db from "../db/connection";
+import Task from "./task";
+import User from "./user";
 
 class Server {
   private app: express.Application;
@@ -38,6 +40,8 @@ class Server {
     try {
       await db.authenticate();
       console.log("Database connected!");
+      await Task.sync();
+      await User.sync();
     } catch (error) {
       console.log(error);
       console.log("Error connecting to the database!");
