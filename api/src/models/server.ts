@@ -1,6 +1,10 @@
 import express, { Application, Request, Response } from "express";
 import routesTask from "../routes/task";
+import routesUser from "../routes/user";
 import db from "../db/connection";
+import Task from "./task";
+import User from "./user";
+import UserType from "./userType";
 
 class Server {
   private app: express.Application;
@@ -28,6 +32,7 @@ class Server {
       });
     });
     this.app.use("/api/tasks", routesTask);
+    this.app.use("/api/users", routesUser);
   }
 
   middlewares() {
@@ -38,6 +43,9 @@ class Server {
     try {
       await db.authenticate();
       console.log("Database connected!");
+      await Task.sync();
+      await User.sync();
+      await UserType.sync();
     } catch (error) {
       console.log(error);
       console.log("Error connecting to the database!");
