@@ -1,31 +1,23 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db/connection";
-import UserType from "./userType";
+import Task from "./task";
+import Category from "./category";
 
-const User = sequelize.define(
-  "tb_user",
+const TaskCategory = sequelize.define(
+  "tb_taskcategory",
   {
-    id_user: {
+    id_taskcategory: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
     },
-    usr_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    usr_email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    usr_pass: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    id_usr_type: {
+    task_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: "2",
+    },
+    category_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   },
   {
@@ -36,9 +28,10 @@ const User = sequelize.define(
 );
 
 try {
-  User.belongsTo(UserType, { foreignKey: "id_usr_type" });
+  TaskCategory.belongsTo(Task, { foreignKey: "task_id" });
+  TaskCategory.belongsTo(Category, { foreignKey: "category_id" });
 } catch (error) {
   console.error("Error setting up associations:", error);
 }
 
-export default User;
+export default TaskCategory;

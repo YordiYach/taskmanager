@@ -11,6 +11,59 @@ interface IUser {
   id_usr_type: number;
 }
 
+export const getUsers = async (req: Request, res: Response) => {
+  const users = await User.findAll();
+
+  res.json(users);
+};
+
+export const getUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await User.findByPk(id);
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404).json({
+      msg: `User with id ${id} not found`,
+    });
+  }
+};
+
+export const deleteUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await User.findByPk(id);
+
+  if (!user) {
+    return res.status(404).json({
+      msg: `User with id ${id} not found`,
+    });
+  } else {
+    await user.destroy();
+    res.json({
+      msg: `User with id ${id} deleted`,
+    });
+  }
+};
+
+export const updateUser = async (req: Request, res: Response) => {
+  const { body } = req;
+  const { id } = req.params;
+
+  const user = await User.findByPk(id);
+
+  if (user) {
+    await user.update(body);
+    res.json({
+      msg: `User with id ${id} updated`,
+    });
+  } else {
+    res.status(404).json({
+      msg: `User with id ${id} not found`,
+    });
+  }
+};
+
 export const newUser = async (req: Request, res: Response) => {
   const { usr_name, usr_email, usr_pass, id_usr_type } = req.body;
 
