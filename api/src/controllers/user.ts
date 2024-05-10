@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import User from "../models/user";
 import jwt from "jsonwebtoken";
+import isAdmin from "../routes/validate-admin";
 
-interface IUser {
+export interface IUser {
   id_user: number;
   usr_name: string;
   usr_email: string;
@@ -30,74 +31,101 @@ export const getUser = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteUser = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  const user = await User.findByPk(id);
+export const deleteUser = [
+  isAdmin,
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const user = await User.findByPk(id);
 
-  if (!user) {
-    return res.status(404).json({
-      msg: `User with id ${id} not found`,
-    });
-  } else {
-    await user.destroy();
-    res.json({
-      msg: `User with id ${id} deleted`,
-    });
-  }
-};
+    if (!user) {
+      return res.status(404).json({
+        msg: `User with id ${id} not found`,
+      });
+    } else {
+      await user.destroy();
+      res.json({
+        msg: `User with id ${id} deleted`,
+      });
+    }
+  },
+];
 
-export const updateUser = async (req: Request, res: Response) => {
-  const { body } = req;
-  const { id } = req.params;
+export const updateUser = [
+  isAdmin,
+  async (req: Request, res: Response) => {
+    try {
+      const { body } = req;
+      const { id } = req.params;
 
-  const user = await User.findByPk(id);
+      // Validación de entrada
+      if (!body || !id) {
+        return res.status(400).json({ msg: "Invalid input" });
+      }
 
-  if (user) {
-    await user.update(body);
-    res.json({
-      msg: `User with id ${id} updated`,
-    });
-  } else {
-    res.status(404).json({
-      msg: `User with id ${id} not found`,
-    });
-  }
-};
+      const user = await User.findByPk(id);
 
-export const newUser = async (req: Request, res: Response) => {
-  const { usr_name, usr_email, usr_pass, id_usr_type } = req.body;
+      if (!user) {
+        return res.status(404).json({ msg: `User with id ${id} not found` });
+      }
 
-  //Validate if the user already exists
-  const user = (await User.findOne({
-    where: { usr_email: usr_email },
-  })) as IUser | null;
+      let hashedPassword;
 
-  if (user) {
-    return res.status(400).json({
-      msg: `User ${usr_email} already exists!`,
-    });
-  }
+      if (body.usr_pass) {
+        hashedPassword = await bcrypt.hash(body.usr_pass, 10);
+      }
 
-  const hashedPassword = await bcrypt.hash(usr_pass, 10);
+      await user.update({
+        usr_name: body.usr_name,
+        usr_email: body.usr_email,
+        usr_pass: hashedPassword,
+        id_usr_type: body.id_usr_type,
+      });
 
-  try {
-    User.create({
-      usr_name: usr_name,
-      usr_email: usr_email,
-      usr_pass: hashedPassword,
-      id_usr_type: id_usr_type,
-    });
+      res.status(200).json({ msg: `User with id ${id} updated` });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ msg: "Server error" });
+    }
+  },
+];
 
-    res.json({
-      msg: `User ${usr_name} created successfully!`,
-    });
-  } catch (error) {
-    res.status(400).json({
-      msg: "Error creating user",
-      error,
-    });
-  }
-};
+export const newUser = [
+  isAdmin,
+  async (req: Request, res: Response) => {
+    const { usr_name, usr_email, usr_pass, id_usr_type } = req.body;
+
+    //Validate if the user already exists
+    const user = (await User.findOne({
+      where: { usr_email: usr_email },
+    })) as IUser | null;
+
+    if (user) {
+      return res.status(400).json({
+        msg: `User ${usr_email} already exists!`,
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(usr_pass, 10);
+
+    try {
+      User.create({
+        usr_name: usr_name,
+        usr_email: usr_email,
+        usr_pass: hashedPassword,
+        id_usr_type: id_usr_type,
+      });
+
+      res.json({
+        msg: `User ${usr_name} created successfully!`,
+      });
+    } catch (error) {
+      res.status(400).json({
+        msg: "Error creating user",
+        error,
+      });
+    }
+  },
+];
 
 export const loginUser = async (req: Request, res: Response) => {
   const { usr_email, usr_pass } = req.body;
@@ -133,5 +161,8 @@ export const loginUser = async (req: Request, res: Response) => {
     }
   );
 
-  res.json(token);
+  res.json({
+    msg: "Logged in",
+    token,
+  });
 };
