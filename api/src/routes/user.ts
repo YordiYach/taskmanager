@@ -11,6 +11,9 @@ import validateToken from "./validate-token";
 
 const router = Router();
 
+
+
+
 /**
  * @swagger
  * /api/users:
@@ -29,7 +32,7 @@ const router = Router();
  *              items:
  *                $ref: '#/components/schemas/Task'
  *      404:
- *        description: Linea no encontrada.
+ *        description: No se encontraron usuarios registrados
  */
 
 router.get("/", validateToken, getUsers);
@@ -51,7 +54,7 @@ router.get("/", validateToken, getUsers);
  *        description: ID Usuario
  *    responses:
  *      200:
- *        description: Se ha obtenido el registro de usuarios
+ *        description: Se ha obtenido el registro del usuario
  *        content:
  *          application/json:
  *            schema:
@@ -59,15 +62,93 @@ router.get("/", validateToken, getUsers);
  *              items:
  *                $ref: '#/components/schemas/Task'
  *      404:
- *        description: Linea no encontrada.
+ *        description: Usuario no encontrado
  */
 
 router.get("/:id", validateToken, getUser);
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *  delete:
+ *    security:
+ *      - bearerAuth: []
+ *    summary: Elimina un usuario
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: string
+ *        required: true
+ *        description: ID Usuario
+ *    responses:
+ *      200:
+ *        description: Se ha eliminado el usuario
+ *      404:
+ *        description: Usuario no encontrado.
+ */
 router.delete("/:id", validateToken, deleteUser);
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *  put:
+ *    security:
+ *      - bearerAuth: []
+ *    summary: Actualiza un usuario
+ *    tags: [Users]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        schema:
+ *          type: integer
+ *        required: true
+ *        description: ID del usuario
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/User'
+ *    responses:
+ *      200:
+ *        description: Usuario actualizado
+ *      404:
+ *        description: Usuario no encontrado
+ */
 router.put("/:id", validateToken, updateUser);
 
+/**
+ * @swagger
+ * /api/users:
+ *  post:
+ *    security:
+ *      - bearerAuth: []
+ *    summary: Agrega un usuario
+ *    tags: [Users]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/User'
+ *    responses:
+ *      201:
+ *        description: Usuario creado.
+ *      500: 
+ *        description: Error en el servidor.
+ *      400:
+ *        description: Error en la petición.
+ *      401:
+ *       description: No autorizado.
+ *      403:
+ *       description: Prohibido.
+ *      404:
+ *       description: No encontrado.
+ */
 router.post("/", validateToken, newUser);
 
 /**
@@ -75,7 +156,7 @@ router.post("/", validateToken, newUser);
  * /api/users/login:
  *  post:
  *    summary: Inicio de sesión
- *    tags: [Inicio de sesión]
+ *    tags: [Login]
  *    requestBody:
  *      required: true
  *      content:
@@ -86,6 +167,10 @@ router.post("/", validateToken, newUser);
  *    responses:
  *      200:
  *        description: Sesión iniciada.
+ *      401:
+ *        description: Credenciales incorrectas.
+ *      500:
+ *       description: Error en el servidor.
  */
 router.post("/login", loginUser);
 

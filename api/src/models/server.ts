@@ -85,7 +85,6 @@ class Server {
  *      required:
  *        - cat_description
  *      example:
- *        id_category: 1
  *        cat_description: Prioridad alta
  *    TaskCategory:
  *      type: object
@@ -130,7 +129,6 @@ class Server {
  *        - usr_pass
  *        - id_usr_type  
  *      example:
- *        id_user: 1
  *        usr_name: Juan Pérez
  *        usr_email: juan@correo.com
  *        usr_pass: "123456"
@@ -147,7 +145,6 @@ class Server {
  *      required:
  *        - usertype_desc
  *      example:
- *        id_usertype: 1
  *        usertype_desc: Administrador
  *    Login:
  *      type: object
@@ -174,7 +171,7 @@ class Server {
     this.app.use("/api/tasks", routesTask);
     this.app.use("/api/users", routesUser);
     this.app.use("/api/categories", routesCategory);
-    this.app.use("/api/tasks/categories", routesTaskCategory);
+    this.app.use("/api/tasks-categories", routesTaskCategory);
     this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   }
 

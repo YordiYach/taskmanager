@@ -28,7 +28,7 @@ const TaskCategory = sequelize.define(
 );
 
 try {
-  TaskCategory.belongsTo(Task, { foreignKey: "task_id" });
+  TaskCategory.belongsTo(Task, { foreignKey: "task_id", onDelete: "CASCADE" });
   TaskCategory.belongsTo(Category, { foreignKey: "category_id" });
 } catch (error) {
   console.error("Error setting up associations:", error);
