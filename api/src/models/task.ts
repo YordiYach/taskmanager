@@ -1,5 +1,6 @@
 import db from "../db/connection";
 import { DataTypes } from "sequelize";
+import User from "./user";
 
 const Task = db.define(
   "tb_task",
@@ -29,4 +30,9 @@ const Task = db.define(
   }
 );
 
+try {
+  Task.belongsTo(User, { foreignKey: "user_id" });
+} catch (error) {
+  console.error("Error setting up associations:", error);
+}
 export default Task;

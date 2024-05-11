@@ -2,10 +2,14 @@ import { Component ,OnInit} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TasknewComponent } from './tasknew/tasknew.component';
 import { TaskService } from './task.service.ts';
+import { CommonModule } from '@angular/common';
 @Component({
+ 
   selector: 'app-task',
   templateUrl: './task.component.html',
-  styleUrl: './task.component.css'
+  styleUrl: './task.component.css',
+    standalone: true,
+    imports: [CommonModule],
 })
 
 export class TaskComponent  implements OnInit{

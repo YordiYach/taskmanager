@@ -1,9 +1,12 @@
 import { Component,Inject,OnInit  } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms'
 @Component({
   selector: 'app-tasknew',
   templateUrl: './tasknew.component.html',
-  styleUrl: './tasknew.component.css'
+  styleUrl: './tasknew.component.css',
+  standalone: true,
+  imports: [FormsModule]
 })
 export class TasknewComponent implements OnInit{
   taskData: any = {
