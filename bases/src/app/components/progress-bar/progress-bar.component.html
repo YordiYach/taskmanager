@@ -1,0 +1,21 @@
+<div class="borde-delgado" style="padding: 2%">
+  <div class="card-body pb-2">
+    <h3>Informe de progreso</h3>
+    <div class="border-delgado progress welcome to astro">
+      <div
+        class="progress-bar bg-danger"
+        role="progressbar"
+        [style]="porcentaje"
+        aria-valuenow="25"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      ></div>
+    </div>
+    <p>{{ number_1 }} % completado</p>
+    <hr />
+    <div class="orden-horizontal">
+      <p>tareas finalizadas: 1</p>
+      <p>tareas pendientes: 3</p>
+    </div>
+  </div>
+</div>
