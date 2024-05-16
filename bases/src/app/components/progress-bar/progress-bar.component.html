@@ -1,21 +1,20 @@
-<div class="borde-delgado" style="padding: 2%">
-  <div class="card-body pb-2">
-    <h3>Informe de progreso</h3>
-    <div class="border-delgado progress welcome to astro">
-      <div
-        class="progress-bar bg-danger"
-        role="progressbar"
-        [style]="porcentaje"
-        aria-valuenow="25"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      ></div>
-    </div>
-    <p>{{ number_1 }} % completado</p>
-    <hr />
-    <div class="orden-horizontal">
-      <p>tareas finalizadas: 1</p>
-      <p>tareas pendientes: 3</p>
+<div class="flex justify-center mt-10 px-4">
+  <div class="card w-full max-w-4xl border shadow-xl p-4 sm:p-6 lg:p-8 bg-white">
+    <div class="card-body">
+      <h2 class="card-title text-black text-2xl sm:text-3xl font-bold">Informe de Progreso</h2>
+      <progress class="progress w-full progress-error" value="70" max="100"></progress>
+      <p class="text-sm text-slate-500">{{number_1}}% Completado</p>
+      <div class="divider"></div>
+      <div class="flex flex-col sm:flex-row place-content-around text-slate-900 text-sm">
+        <div class="flex flex-row">
+          <h4 class="font-bold mb-2 sm:mb-0">Tareas Finalizadas:</h4>
+          <h4 class="pl-1 mb-2 sm:mb-0">1</h4>
+        </div>
+        <div class="flex flex-row">
+          <h4 class="font-bold mb-2 sm:mt-0">Tareas Pendientes:</h4>
+          <h4 class="pl-1 mb-2 sm:mb-0">2</h4>
+        </div>
+      </div>
     </div>
   </div>
 </div>
