@@ -1,39 +1,32 @@
-<div class="container-fluid mt-5">
-    <div class="container">
-        <div class="container" style="width: 80rem;">
-            <div class="container">
-                <div class="container card mt-4">
-                    <div class="card-body">
-                        <h3>Bienvenido</h3>
-                        <div class="card-title">
-                            <h1>GESTOR DE TAREAS</h1>
+<div class="mx-auto max-w-7xl mt-5 flex justify-end">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white card-title py-2 p-10 pt-5 pb-5 rounded-2xl shadow-lg"
+        type="button" (click)="addTask()">Add New Task</button>
+</div>
+
+<div class="mx-auto bg-white mt-5 mb-10 card w-full max-w-7xl border-4 items-center">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="col" *ngFor="let task of tasks">
+            <div class="m-5 bg-white shadow-md rounded-2xl border-4">
+                <div class="p-5">
+                    <div class="mb-2 font-medium text-xs text-gray-600">{{ task.titulo }}</div>
+                    <div class="mb-2 font-semibold text-xl text-black">{{ task.tarea }}</div>
+                    <div class="mb-4 text-gray-600">{{ task.descripcion }}</div>
+                    <div class="divider"></div>
+                    <div class="flex flex-col sm:flex-row place-content-between text-slate-900 text-sm">
+                        <div class="flex flex-row">
+                            <h4 class="font-bold mb-2 sm:mb-0">Inicio:</h4>
+                            <h4 class="pl-1 mb-2 sm:mb-0">17 May</h4>
                         </div>
-                        <p>Crea una tarea aquí y agrégala a tu lista por hacer</p>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="btn btn-primary me-md-2" type="button" (click)="addTask()">Agregar</button>
+                        <div class="flex flex-row">
+                            <h4 class="font-bold mb-2 sm:mt-0">Fin:</h4>
+                            <h4 class="pl-1 mb-2 sm:mb-0">31 May</h4>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="container-fluid mt-5 card">
-                <div class="container mb-4">
-                    <div class="row">
-                        <div class="col-sm-4" *ngFor="let task of tasks">
-                            <div class="card mt-4">
-                                <div class="card-body">
-                                    <div class="card-text">{{ task.titulo }}</div>
-                                    <div class="card-title">{{ task.tarea }}</div>
-                                    <div class="card-text">{{ task.descripcion }}</div>
-
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                        <button class="btn btn-warning me-md-2" type="button"
-                                            (click)="deleteTask(task)">Eliminar</button>
-                                        <button class="btn btn-success me-md-2" type="button"
-                                            (click)="openTaskDetails(task)">Editar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="flex justify-center space-x-2 mt-3">
+                        <!-- <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            type="button" (click)="openTaskDetails(task)">Editar</button> -->
+                        <button class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded" type="button"
+                            (click)="deleteTask(task)">FINALIZAR</button>
                     </div>
                 </div>
             </div>

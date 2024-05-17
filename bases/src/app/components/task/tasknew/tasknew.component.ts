@@ -1,11 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormsModule } from '@angular/forms'
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-tasknew',
   templateUrl: './tasknew.component.html',
-  styleUrl: './tasknew.component.css',
+  styleUrls: ['./tasknew.component.css'],
   standalone: true,
   imports: [FormsModule]
 })
@@ -16,9 +16,11 @@ export class TasknewComponent implements OnInit {
     descripcion: "",
     id: 0
   };
-  constructor(public matDialogRef: MatDialogRef<TasknewComponent>, @Inject(MAT_DIALOG_DATA) public data: any) { }
 
-
+  constructor(
+    public matDialogRef: MatDialogRef<TasknewComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) { }
 
   ngOnInit(): void {
     if (!this.data) {
@@ -42,5 +44,9 @@ export class TasknewComponent implements OnInit {
 
   onSubmit() {
     this.matDialogRef.close(this.taskData);
+  }
+
+  onCancel() {
+    this.matDialogRef.close();
   }
 }
